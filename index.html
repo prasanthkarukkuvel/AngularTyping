@@ -9,26 +9,34 @@
 
 	<script type="text/javascript" src="angular.min.js"></script>
 	<script type="text/javascript">
-		angular.module('angular-typing', []).directive("typing",[function(){
+		angular.module('angular-typing', []).directive("typing",['$timeout','$parse',function($timeout, $parse){
 			return{
-				link:function(scope, elem, args) {
-					var input = elem[0], typing = false, timeout;
+				link:function(scope, elem, attr) {
+					var start = $parse(attr.typeStart), stop = $parse(attr.typeEnd), delay = attr.typing, input = elem[0], typing = false, timeout;
 					function started(event) {
 						if(!typing)
 						{
 							typing = true;
-							console.log("Typing started");
+							if(start){
+								start(scope, { value: input.value });
+								console.log('s');
+							}					
 						}						
 					}
-					function stopped(event, delay) {
+					function stopped(event, d) {
 						if(typing){
-							clearTimeout(timeout);
-							timeout = setTimeout(function(){
-								typing = false;
-								console.log("Typing ended");
-							}, 1000);
+							$timeout.cancel(timeout);
+							timeout = $timeout(function(){
+								typing = false;		
+								if(stop){
+									stop(scope, { value: input.value });	
+									console.log('e');								
+								}					
+							}								
+							, d >= 0 ? d : delay ? parseInt(delay) : 400);
 						}
 					}
+
 					input.addEventListener("keypress", started);
 					input.addEventListener("keyup", stopped);
 					input.addEventListener("keydown", function(event){
@@ -39,10 +47,10 @@
 					input.addEventListener("blur", function(event){
 						stopped(event,0);
 					});
-					
+
 				}
 			};
 		}]);
-	</script>
+</script>
 </body>
 </html>
