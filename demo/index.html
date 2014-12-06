@@ -1,0 +1,15 @@
+<html !>
+<head>
+	<title>Angular Typing</title>
+</head>
+<body ng-app="typingDemo">
+	<div ng-controller="DemoController as dCtrl">
+		<input ng-model="dCtrl.text" typing="750" type-start="dCtrl.typeStart(value)" type-end="dCtrl.typeEnd(value)" type="text"></input>
+		<p ng-bind="dCtrl.currentStatus()"></p>
+	</div>
+
+	<script type="text/javascript" src="js/angular.min.js"></script>	
+	<script type="text/javascript" src="js/angular-typing.min.js"></script>
+	<script type="text/javascript" src="app.js"></script>	
+</body>
+</html>
