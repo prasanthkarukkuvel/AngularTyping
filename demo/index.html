@@ -1,9 +1,10 @@
 <html !>
 <head>
 	<title>Angular Typing</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 </head>
 <body ng-app="typingDemo">
-	<div ng-controller="DemoController as dCtrl">
+	<div class="container" ng-controller="DemoController as dCtrl">
 		<input ng-model="dCtrl.text" typing="750" type-start="dCtrl.typeStart(value)" type-end="dCtrl.typeEnd(value)" type="text"></input>
 		<p ng-bind="dCtrl.currentStatus()"></p>
 	</div>
