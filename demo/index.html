@@ -1,12 +1,47 @@
 <html !>
 <head>
 	<title>Angular Typing</title>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:500,400' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<style type="text/css">
+		body{
+			font-family: 'Open Sans', sans-serif;
+			font-weight: 500;
+		}
+		h1{
+			font-weight: 400;
+			color: #E07A7A;
+			padding:10px 0;
+		}
+		.panel{
+			margin-top: 30px;
+		}
+	</style>
 </head>
 <body ng-app="typingDemo">
 	<div class="container" ng-controller="DemoController as dCtrl">
-		<input ng-model="dCtrl.text" typing="750" type-start="dCtrl.typeStart(value)" type-end="dCtrl.typeEnd(value)" type="text"></input>
-		<p ng-bind="dCtrl.currentStatus()"></p>
+		<h1>Angular Typing</h1>
+		<p>Simple angular version of <a href="http://lab.narf.pl/jquery-typing/">JQuery Typing</a> allows to bind callbacks for started and stopped typing events.</p>
+		<div>
+			<div class="panel-heading">Options</div>
+			<div class="panel-body">
+				<div class="form-group">
+					<label for="delay">Delay</label>
+					<input type="number" class="form-control" id="delay" ng-model="dCtrl.delay" placeholder="Wait delay">
+				</div>
+			</div>					
+		</div>			
+		<div class="panel panel-default" ng-class="{'panel-primary':dCtrl.isTyping()}">
+			<div class="panel-body">
+				<div>
+					<div class="panel-heading">Type your text</div>				
+					<div class="panel-body">					
+						<input class="form-control" ng-model="dCtrl.text" typing type-delay="dCtrl.getDelay()" type-start="dCtrl.typeStart(value)" type-end="dCtrl.typeEnd(value)" type="text" placeholder="Your text"></input>
+					</div>
+				</div>				
+			</div>
+			<div class="panel-footer"><span ng-bind="dCtrl.currentStatus()"></span></div>
+		</div>		
 	</div>
 
 	<script type="text/javascript" src="js/angular.min.js"></script>	

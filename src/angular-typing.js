@@ -8,16 +8,21 @@
 
 'use strict';
 // angular module 'angular-typing' 
-angular.module('angular-typing', []).directive("typing",['$timeout','$parse',function($timeout, $parse){
+angular.module('angular-typing', []).directive("typing",['$timeout',function($timeout){
 	// directive 'typing'
 	return {
-		//allow only attributes
-		restrict: 'A',
+		//allow only attributes and class
+		restrict: 'AC',
+		scope:{
+			typeDelay:'=',
+			typeStart:'&',
+			typeEnd:'&'
+		},
 		link:function(scope, elem, attr) {
+
 					// other variables
-					var start = $parse(attr.typeStart), // parse typeStart
-						stop = $parse(attr.typeEnd), // parse typeEnd
-						delay = attr.typing, // delay. default: 400
+					var start = scope.typeStart, 
+						stop = scope.typeEnd, 					
 						input = elem[0], // input element
 						typing = false, 
 						timeout;
@@ -30,29 +35,30 @@ angular.module('angular-typing', []).directive("typing",['$timeout','$parse',fun
 							typing = true;
 							if(start){
 								// call typeStart method on the scope
-								start(scope, { value: input.value });								
+								start({ value: input.value });								
 							}					
 						}						
 					}
 
 					// typing ended
 					function stopped(event, d) {
-						if(typing){
-
+						if(typing)
+						{
 							// clear and create until typing stopped
 							$timeout.cancel(timeout);
+
 							// timeout callback
-							timeout = $timeout(function(){
+							timeout = $timeout(function() {
 
 								// finished typing...
 								typing = false;		
-								if(stop){
-									// call typeEnd method on the scope
-									stop(scope, { value: input.value });																	
+								if(stop) {
+									// call typeEnd method on the scope									
+									stop({ value: input.value });																	
 								}					
 							}		
 							//check and assign defaults						
-							, d >= 0 ? d : delay ? parseInt(delay) : 400);
+							, d ? d : scope.typeDelay ? scope.typeDelay : 400);
 						}
 					}
 
@@ -60,13 +66,13 @@ angular.module('angular-typing', []).directive("typing",['$timeout','$parse',fun
 					input.addEventListener("keypress", started);
 					input.addEventListener("keyup", stopped);
 					// delete and backspace
-					input.addEventListener("keydown", function(event){
+					input.addEventListener("keydown", function(event) {
 						if (event.keyCode === 8 || event.keyCode === 46) {
 							started(event);
 						}
 					});
 					// blurs
-					input.addEventListener("blur", function(event){
+					input.addEventListener("blur", function(event) {
 						stopped(event,0);
 					});
 				}
