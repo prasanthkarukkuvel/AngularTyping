@@ -13,7 +13,7 @@ angular.module("typingDemo", ['angular-typing']).controller('DemoController', [f
 
 	self.typeEnd = function(value) {	
 		self.typing = false;	
-		self.status = value.trim() === '' ? "Start typing.." : "You have typed: " + value;
+		self.status = value.input.trim() === '' ? "Start typing.." : "You have typed: " + value.input;
 	};
 
 	self.currentStatus = function() {
